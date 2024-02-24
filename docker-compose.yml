@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  mysqldb:
+    build:
+      context: ./docker-db
+      dockerfile: Dockerfile
+    volumes:
+      - ./docker-db/store:/var/lib/mysql
+    ports:
+      - 3307:3306
+    networks:
+      - network
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysqldb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/books?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_DRIVER: com.mysql.cj.jdbc.Driver
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    networks:
+      - network
+networks:
+  network:
