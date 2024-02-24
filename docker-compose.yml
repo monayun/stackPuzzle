@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  mysql:
+    container_name: mysqldb
+    image: mysql:8.0.13
+    environment:
+      MYSQL_DATABASE: house
+      MYSQL_ROOT_PASSWORD: house
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3307:3306"
+    restart: always
